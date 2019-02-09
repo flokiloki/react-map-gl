@@ -48,14 +48,6 @@ const propTypes = Object.assign({}, BaseControl.propTypes, {
 const defaultProps = Object.assign({}, BaseControl.defaultProps, {
   className: '',
   // mapbox geolocate options
-  positionOptions: {
-    enableHighAccuracy: false,
-    maximumAge: 0,
-    timeout: 6000 /* 6 sec */
-  },
-  fitBoundsOptions: {
-    maxZoom: 15
-  },
   trackUserLocation: false,
   showUserLocation: true,
 
@@ -112,7 +104,7 @@ export default class GeolocateControl extends BaseControl {
     const controlOptions = {};
     ['positionOptions', 'fitBoundsOptions', 'trackUserLocation', 'showUserLocation'].forEach(
       prop => {
-        if (this.props[prop]) {
+        if (prop in this.props) {
           controlOptions[prop] = this.props[prop];
         }
       }
@@ -121,7 +113,6 @@ export default class GeolocateControl extends BaseControl {
     this._mapboxGeolocateControl = new MapboxGeolocateControl(controlOptions);
 
     // replace mapbox internal prop
-    this._mapboxGeolocateControl._map = this._context.map;
     this._mapboxGeolocateControl._watchState = WATCH_STATE.OFF;
 
     // replace mapbox internal UI elements
