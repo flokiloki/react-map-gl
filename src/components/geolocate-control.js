@@ -198,7 +198,7 @@ export default class GeolocateControl extends BaseControl {
     const bounds = center.toBounds(radius);
 
     return [
-      [bounds._ne.lng, bounds._sw.lat],
+      [bounds._ne.lng, bounds._ne.lat],
       [bounds._sw.lng, bounds._sw.lat]
     ];
   };
@@ -207,11 +207,7 @@ export default class GeolocateControl extends BaseControl {
     const {viewport} = this._context;
 
     const bounds = this._getBounds(position);
-    const {longitude, latitude, zoom} = new WebMercatorViewport(viewport)
-      .fitBounds(bounds, {
-        padding: 20,
-        offset: [0, -100]
-      });
+    const {longitude, latitude, zoom} = new WebMercatorViewport(viewport).fitBounds(bounds);
 
     const newViewState = Object.assign({}, viewport, {longitude, latitude, zoom});
     const mapState = new MapState(newViewState);
